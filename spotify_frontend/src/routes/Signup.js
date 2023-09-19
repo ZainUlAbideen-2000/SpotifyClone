@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Icon } from '@iconify/react';
 import TextInput from '../components/shared/TextInput';
+import PasswordInput from '../components/shared/TextInput';
 import { Link } from 'react-router-dom';
 import { makeUnauthenticatedPOSTRequest } from '../utils/serverHelper.js';
 
@@ -63,7 +64,7 @@ function Signup() {
                     value={username}
                     setValue={setUsername}
                 />
-                <TextInput
+                <PasswordInput
                     label='Create a password'
                     placeholder='Enter a strong password again'
                     value={password}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function TextInput({ label, placeholder, value, setValue }) {
+function PasswordInput({ label, placeholder, value, setValue }) {
     return (
         <div className='flex flex-col w-full pb-6'>
             <label for={label} className='font-semibold pb-1'>{label}</label>
@@ -16,4 +16,4 @@ function TextInput({ label, placeholder, value, setValue }) {
     )
 }
 
-export default TextInput
+export default PasswordInput
