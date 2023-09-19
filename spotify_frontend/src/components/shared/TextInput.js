@@ -1,6 +1,6 @@
 import React from 'react'
 
-function TextInput({ label, placeholder }) {
+function TextInput({ label, placeholder, value, setValue }) {
     return (
         <div className='flex flex-col w-full pb-6'>
             <label for={label} className='font-semibold pb-1'>{label}</label>
@@ -9,6 +9,8 @@ function TextInput({ label, placeholder }) {
                 placeholder={placeholder}
                 className='border border-solid border-gray-400 p-2 rounded placeholder-gray-500'
                 id={label}
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
             />
         </div>
     )
