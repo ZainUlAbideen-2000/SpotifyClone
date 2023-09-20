@@ -1,20 +1,23 @@
 import React, { useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { Icon } from '@iconify/react';
 import TextInput from '../components/shared/TextInput';
 import PasswordInput from '../components/shared/TextInput';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { makeUnauthenticatedPOSTRequest } from '../utils/serverHelper.js';
 
 function Signup() {
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [username, setUsername] = useState("")
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [confirmemail, setConfirmemail] = useState("")
+    //  eslint-disable-next-line no-unused-vars
+    const [cookies, setCookies] = useCookies(['token'])
 
-    // console.log(email)
-
+    const navigate = useNavigate()
 
     const signup = async () => {
         if (email !== confirmemail) {
@@ -28,10 +31,18 @@ function Signup() {
             userName: username,
             firstName: firstname,
             lastName: lastname,
-            // confirmemail: confirmemail
+
         }
+
         const response = await makeUnauthenticatedPOSTRequest("/auth/register", data);
         if (response && !response.err) {
+            console.log(response)
+            const token = response.token;
+            const date = new Date();
+            date.setDate(date.getDate() + 30);
+            setCookies("token", token, { path: '/', expires: date })
+            navigate("/home")
+
             alert("Signup successful!")
         } else {
             alert(response.error)
