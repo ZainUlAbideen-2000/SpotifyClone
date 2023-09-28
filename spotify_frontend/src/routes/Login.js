@@ -21,8 +21,8 @@ function Login() {
       "/auth/login",
       data
     );
-    console.log("response",response);
-    console.log("response error",response.err);
+    // console.log("response",response);
+    // console.log("response error",response.err);
 
     if (response && !response.err) {
       const token = response.token;

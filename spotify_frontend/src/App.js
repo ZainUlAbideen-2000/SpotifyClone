@@ -4,6 +4,8 @@ import './output.css';
 import { BrowserRouter as Router, Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
 import Home from './routes/Home';
 import { useCookies } from 'react-cookie'
+import LoggedInHome from './routes/LoggedInHome';
+import UploadSongs from './routes/UploadSongs';
 
 function App() {
 
@@ -16,8 +18,9 @@ function App() {
         {cookies.token ?
           <Routes>
             <Route path='/' element={<h1>Home</h1>} />
-            <Route path='/about' element={<h1>Home</h1>} />
-            <Route path='/home' element={<Home />} />
+            <Route path='/about' element={<h1>About Page</h1>} />
+            <Route path='/home' element={<LoggedInHome />} />
+            <Route path='/uploadsongs' element={<UploadSongs  />} />
             <Route path='*' element={<Navigate to='/home' />} />
           </Routes>
           :
