@@ -8,6 +8,7 @@ import TextInput from "../components/shared/TextInput";
 import CloudinaryUpload from '../components/shared/CloudinaryUpload'
 import { makeAuthenticatedPOSTRequest } from '../utils/serverHelper.js';
 import { useNavigate } from "react-router-dom";
+import SingleSongCard from '../components/shared/SingleSongCard'
 
 
 
@@ -109,49 +110,10 @@ function LoggedInHome() {
                     </div>
                 </div>
                 <div className=" bg-gradient h-9/10 content p-8 pt-0 overflow-auto">
-                    <div className="text-2xl font-semibold mb-5 text-white mt-8">
-                        Upload Your Music
-                    </div>
-                    <div className="w-2/3 flex space-x-3">
-                        <div className="w-1/2">
-                            <TextInput
-                                label="Name"
-                                labelClassName={"text-white"}
-                                placeholder="Name"
-                                value={name}
-                                setValue={setName}
-                            />
+                    <div className='pt-4'>
+                        <SingleSongCard />
 
-                        </div>
-                        <div className="w-1/2">
-                            <TextInput
-                                label="Thumbnail"
-                                labelClassName={"text-white"}
-                                placeholder="Thumbnail"
-                                value={thumbnail}
-                                setValue={setThumbnail}
-                            />
-                        </div>
                     </div>
-
-                    <div className='py-5'>
-                        {uploadedFileName ? (
-                            <div className="text-black bg-white p-3 w-1/3 rounded-full font-semibold ">{uploadedFileName.substring(0, 35)}...</div>
-                        ) : (
-                            <div className=''>
-                                <CloudinaryUpload setUrl={setplaylistUrl} setName={setuploadedFileName} />
-                            </div>
-                        )
-                        }
-                    </div>
-                    <div
-                        className="bg-white w-40 flex items-center justify-center p-4 rounded-full cursor-pointer font-semibold"
-                        onClick={submitSong}
-                    >
-                        Submit Song
-                    </div>
-
-
                 </div>
 
             </div>

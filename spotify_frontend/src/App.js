@@ -6,6 +6,7 @@ import Home from './routes/Home';
 import { useCookies } from 'react-cookie'
 import LoggedInHome from './routes/LoggedInHome';
 import UploadSongs from './routes/UploadSongs';
+import MyMusic from './routes/MyMusic';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
             <Route path='/about' element={<h1>About Page</h1>} />
             <Route path='/home' element={<LoggedInHome />} />
             <Route path='/uploadsongs' element={<UploadSongs  />} />
+            <Route path='/mymusic' element={<MyMusic  />} />
             <Route path='*' element={<Navigate to='/home' />} />
           </Routes>
           :
