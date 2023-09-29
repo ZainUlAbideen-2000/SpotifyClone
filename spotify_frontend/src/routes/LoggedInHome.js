@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react'
 import IconsText from '../components/shared/IconsText'
 import '../CSS/home.css'
 import TextHover from '../components/shared/TextHover'
+import {useNavigate} from "react-router-dom";
 
 
 const focusCardsData = [
@@ -74,6 +75,7 @@ const spotifyPlaylistsCardData = [
 
 
 function LoggedInHome() {
+    const navigate = useNavigate();
     return (
         <div className='w-full h-full flex px-3 bg-black'>
 
@@ -119,7 +121,7 @@ function LoggedInHome() {
                         <div className='text-white'>
                             <Icon icon="pajamas:earth" />
                         </div>
-                        <div className='text-white ml-2 font-semibold font-poppins text-base'>English</div>
+                        <div className='text-white ml-4 font-semibold font-poppins text-base'>English</div>
                     </div>
                 </div>
             </div>
@@ -136,7 +138,13 @@ function LoggedInHome() {
                             <Icon icon="ep:arrow-right" fontSize='20px' />
                         </div>
                     </div>
-                    <div className='text-white mr-5 flex items-center justify-center space-x-1'>
+                    <div className='text-white mr-5 flex items-center justify-center space-x-6'>
+                        <div onClick={() => {
+                            navigate('/uploadsongs');
+                        }}
+                            className=' font-bold text-gray-400 justify-center items-center cursor-pointer hover:underline'>
+                            Upload Songs
+                        </div>
                         <div className='bg-white font-bold text-black px-3 py-2.5 border rounded-full justify-center items-center cursor-pointer hover:font-bold'>
                             ZA
                         </div>
@@ -147,7 +155,7 @@ function LoggedInHome() {
                         <PlaylistView titleText="Spotify Playlist" cardData={focusCardsData} />
                         <PlaylistView titleText="Focus" cardData={spotifyPlaylistsCardData} />
 
-                    </div>  
+                    </div>
                 </div>
             </div>
 

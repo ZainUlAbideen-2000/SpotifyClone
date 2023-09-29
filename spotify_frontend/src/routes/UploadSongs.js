@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import spotify_logo from '../assets/logo/spotify_logo.svg'
 import { Icon } from '@iconify/react'
 import IconsText from '../components/shared/IconsText'
@@ -6,76 +6,35 @@ import '../CSS/home.css'
 import TextHover from '../components/shared/TextHover'
 import TextInput from "../components/shared/TextInput";
 import CloudinaryUpload from '../components/shared/CloudinaryUpload'
-
-const focusCardsData = [
-    {
-        title: "Peaceful Piano",
-        description: "Relax and indulge with beautiful piano pieces",
-        imgUrl: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1546&q=80",
-    },
-    {
-        title: "Deep Focus",
-        description: "Keep calm and focus with this music",
-        imgUrl: "https://images.unsplash.com/photo-1558021212-51b6ecfa0db9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1766&q=80",
-    },
-    {
-        title: "Instrumental Study",
-        description: "Focus with soft study music in the background.",
-        imgUrl: "https://images.unsplash.com/photo-1612225330812-01a9c6b355ec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80",
-    },
-    {
-        title: "Focus Flow",
-        description: "Up tempo instrumental hip hop beats",
-        imgUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-    },
-    {
-        title: "Beats to think to",
-        description: "Focus with deep techno and tech house",
-        imgUrl: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-    },
-    {
-        title: "Focus Flow",
-        description: "Up tempo instrumental hip hop beats",
-        imgUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-    },
-];
-
-const spotifyPlaylistsCardData = [
-    {
-        title: "This is one",
-        description: "Relax and indulge with beautiful piano pieces",
-        imgUrl: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1546&q=80",
-    },
-    {
-        title: "Deep Focus",
-        description: "Keep calm and focus with this music",
-        imgUrl: "https://images.unsplash.com/photo-1558021212-51b6ecfa0db9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1766&q=80",
-    },
-    {
-        title: "Instrumental Study",
-        description: "Focus with soft study music in the background.",
-        imgUrl: "https://images.unsplash.com/photo-1612225330812-01a9c6b355ec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80",
-    },
-    {
-        title: "Focus Flow",
-        description: "Up tempo instrumental hip hop beats",
-        imgUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-    },
-    {
-        title: "Beats to think to",
-        description: "Focus with deep techno and tech house",
-        imgUrl: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-    },
-    {
-        title: "Focus Flow",
-        description: "Up tempo instrumental hip hop beats",
-        imgUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-    },
-];
+import { makeAuthenticatedPOSTRequest } from '../utils/serverHelper.js';
+import {useNavigate} from "react-router-dom";
 
 
 
 function LoggedInHome() {
+
+    const [name, setName] = useState("");
+    const [thumbnail, setThumbnail] = useState("");
+    const [playlistUrl, setplaylistUrl] = useState("");
+    const [uploadedFileName, setuploadedFileName] = useState();
+
+    const navigate = useNavigate();
+
+    const submitSong = async () => {
+        const data = { name, thumbnail, track: playlistUrl };
+        const response = await makeAuthenticatedPOSTRequest(
+            "/song/create",
+            data
+        )
+        // console.log("response",response);
+        if (response.err) {
+            alert("Could not create song");
+            return;
+        }
+        alert("Success");
+        navigate("/home");
+    }
+
     return (
         <div className='w-full h-full flex px-3 bg-black'>
 
@@ -143,13 +102,6 @@ function LoggedInHome() {
                         </div>
                     </div>
                 </div>
-                {/* <div className='h-9/10 bg-gradient overflow-auto'>
-                    <div className=''>
-                        <PlaylistView titleText="Spotify Playlist" cardData={focusCardsData} />
-                        <PlaylistView titleText="Focus" cardData={spotifyPlaylistsCardData} />
-
-                    </div>
-                </div> */}
                 <div className=" bg-gradient h-9/10 content p-8 pt-0 overflow-auto">
                     <div className="text-2xl font-semibold mb-5 text-white mt-8">
                         Upload Your Music
@@ -160,8 +112,8 @@ function LoggedInHome() {
                                 label="Name"
                                 labelClassName={"text-white"}
                                 placeholder="Name"
-                            // value={name}
-                            // setValue={setName}
+                                value={name}
+                                setValue={setName}
                             />
 
                         </div>
@@ -170,14 +122,30 @@ function LoggedInHome() {
                                 label="Thumbnail"
                                 labelClassName={"text-white"}
                                 placeholder="Thumbnail"
-                            // value={thumbnail}
-                            // setValue={setThumbnail}
+                                value={thumbnail}
+                                setValue={setThumbnail}
                             />
                         </div>
                     </div>
+
                     <div className='py-5'>
-                        <CloudinaryUpload />
+                        {uploadedFileName ? (
+                            <div className="text-black bg-white p-3 w-1/3 rounded-full font-semibold ">{uploadedFileName.substring(0, 35)}...</div>
+                        ) : (
+                            <div className=''>
+                                <CloudinaryUpload setUrl={setplaylistUrl} setName={setuploadedFileName} />
+                            </div>
+                        )
+                        }
                     </div>
+                    <div
+                        className="bg-white w-40 flex items-center justify-center p-4 rounded-full cursor-pointer font-semibold"
+                        onClick={submitSong}
+                    >
+                        Submit Song
+                    </div>
+
+
                 </div>
 
             </div>
