@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import spotify_logo from '../assets/logo/spotify_logo.svg'
 import { Icon } from '@iconify/react'
 import IconsText from '../components/shared/IconsText'
@@ -9,32 +9,33 @@ import CloudinaryUpload from '../components/shared/CloudinaryUpload'
 import { makeAuthenticatedPOSTRequest } from '../utils/serverHelper.js';
 import { useNavigate } from "react-router-dom";
 import SingleSongCard from '../components/shared/SingleSongCard'
-
+import { makeAuthenticatedGETRequest } from '../utils/serverHelper.js'
 
 
 function LoggedInHome() {
 
-    const [name, setName] = useState("");
-    const [thumbnail, setThumbnail] = useState("");
-    const [playlistUrl, setplaylistUrl] = useState("");
-    const [uploadedFileName, setuploadedFileName] = useState();
+
+    const [songData, setSongData] = useState([]);
+
+    useEffect(() => {
+        const getSongs = async () => {
+            const response = await makeAuthenticatedGETRequest('/song/get/mysongs');
+            console.log(response);
+            setSongData(response.data);
+        }
+        getSongs();
+    })
+
+    // const songData = [
+    //     {
+    //         thumbnail: "https://images.unsplash.com/photo-1695754188846-a4a384566dd2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80",
+    //         name: "Kuch is tarah",
+    //         artist: "Atif Aslam",
+    //         duration: "3:45"
+    //     }
+    // ]
 
     const navigate = useNavigate();
-
-    const submitSong = async () => {
-        const data = { name, thumbnail, track: playlistUrl };
-        const response = await makeAuthenticatedPOSTRequest(
-            "/song/create",
-            data
-        )
-        // console.log("response",response);
-        if (response.err) {
-            alert("Could not create song");
-            return;
-        }
-        alert("Success");
-        navigate("/home");
-    }
 
     return (
         <div className='w-full h-full flex px-3 bg-black'>
@@ -87,7 +88,7 @@ function LoggedInHome() {
 
             {/* main code */}
             <div className='ml-3 my-3 w-4/5 border border-transparent rounded-lg overflow-auto relative'>
-                <div className='bg-app-black bg-opacity-60 w-full h-1/10 flex flex-row justify-between items-center sticky top-0 z-10'>
+                <div className='bg-app-black bg-opacity-60 w-full h-1/10 flex flex-row justify-between items-center '>
 
                     <div className='text-white ml-8 flex flex-row space-x-2'>
                         <div className='p-2 border rounded-full bg-black border-transparent cursor-pointer'>
@@ -109,10 +110,14 @@ function LoggedInHome() {
                         </div>
                     </div>
                 </div>
-                <div className=" bg-gradient h-9/10 content p-8 pt-0 overflow-auto">
-                    <div className='pt-4'>
-                        <SingleSongCard />
-
+                <div className=" bg-gradient h-9/10 content p-8 overflow-auto">
+                    <div className='text-white font-poppins font-bold text-xl'>
+                        My Songs
+                    </div>
+                    <div className='pt-4 overflow-auto'>
+                        {songData.map((item) => {
+                            return <SingleSongCard info={item} />
+                        })}
                     </div>
                 </div>
 

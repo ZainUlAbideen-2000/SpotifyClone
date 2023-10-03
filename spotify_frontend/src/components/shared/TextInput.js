@@ -1,6 +1,6 @@
 import React from 'react'
 
-function PasswordInput({ label, placeholder, value, setValue, labelClassName, className }) {
+function PasswordInput({ label, placeholder, value, onChange, setValue, labelClassName, className }) {
     return (
         <div
             className={`textInputDiv flex flex-col space-y-2 w-full ${className}`}
@@ -14,7 +14,8 @@ function PasswordInput({ label, placeholder, value, setValue, labelClassName, cl
                 className='border border-solid border-gray-400 p-2 rounded placeholder-gray-500'
                 id={label}
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                // onChange={(e) => setValue(e.target.value)}
+                onChange={onChange}
             />
         </div>
     )

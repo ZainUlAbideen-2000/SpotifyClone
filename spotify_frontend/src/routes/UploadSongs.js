@@ -8,15 +8,25 @@ import TextInput from "../components/shared/TextInput";
 import CloudinaryUpload from '../components/shared/CloudinaryUpload'
 import { makeAuthenticatedPOSTRequest } from '../utils/serverHelper.js';
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    updateName,
+    updateThumbnail,
+    updatePlaylistUrl,
+    updateUploadedFileName,
+} from '../redux/actions/songAction';
 
 
 
 function LoggedInHome() {
 
-    const [name, setName] = useState("");
-    const [thumbnail, setThumbnail] = useState("");
-    const [playlistUrl, setplaylistUrl] = useState("");
-    const [uploadedFileName, setuploadedFileName] = useState();
+    const dispatch = useDispatch();
+    const { name, thumbnail, playlistUrl, uploadedFileName } = useSelector((state) => state.song);
+
+    // const [name, setName] = useState("");
+    // const [thumbnail, setThumbnail] = useState("");
+    // const [playlistUrl, setplaylistUrl] = useState("");
+    // const [uploadedFileName, setuploadedFileName] = useState();
 
     const navigate = useNavigate();
 
@@ -119,7 +129,7 @@ function LoggedInHome() {
                                 labelClassName={"text-white"}
                                 placeholder="Name"
                                 value={name}
-                                setValue={setName}
+                                onChange={(e) => dispatch(updateName(e.target.value))}
                             />
 
                         </div>
@@ -129,7 +139,7 @@ function LoggedInHome() {
                                 labelClassName={"text-white"}
                                 placeholder="Thumbnail"
                                 value={thumbnail}
-                                setValue={setThumbnail}
+                                onChange={(e) => dispatch(updateThumbnail(e.target.value))}
                             />
                         </div>
                     </div>
@@ -139,7 +149,9 @@ function LoggedInHome() {
                             <div className="text-black bg-white p-3 w-1/3 rounded-full font-semibold ">{uploadedFileName.substring(0, 35)}...</div>
                         ) : (
                             <div className=''>
-                                <CloudinaryUpload setUrl={setplaylistUrl} setName={setuploadedFileName} />
+                                <CloudinaryUpload
+                                    setUrl={(url) => dispatch(updatePlaylistUrl(url))}
+                                    setName={(name) => dispatch(updateUploadedFileName(name))} />
                             </div>
                         )
                         }
